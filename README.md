@@ -144,6 +144,13 @@ If the log file already exists, `slog` will append to that file.
 You can also set a root directory to log to with the environment variable `SLOGPY_LOGPATH` in which case the logs will go to
 `<SLOGPY_LOGPATH>/<module>.YYYYmmDD_HHMMSS.log` or `<SLOGPY_LOGPATH>/YYYYmmDD_HHMMSS.log`
 
+Passing a `tag` to `slog.initialize()` will also affect the name of the generated log file. Passing a tag is handy when you have a tool that implements sub-commands and the like.
+
+* `slog.initialize()` -> 20240320_072842.log
+* `slog.initialize(module='widget')` -> widget.20240320_072842.log
+* `slog.initialize(module='widget', tag='init')` -> widget.20240320_072842.init.log
+* `slog.initialize(tag='init')` -> 20240320_072842.init.log
+
 ## Using tags with slog and click
 
 ```python

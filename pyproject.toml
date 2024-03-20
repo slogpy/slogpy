@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "slogpy"
+version = "0.1.0-dev"
+description = "Basic console and file logging"
+license = "Proprietary"
+authors = ["Neel Malik <n33lm@outlook.com>"]
+readme = "README.md"
+repository = "https://github.com/slogpy/slogpy"
+classifiers = [
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Environment :: Console"
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+rich = "^13.7.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

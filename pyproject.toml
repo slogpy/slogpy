@@ -2,7 +2,7 @@
 name = "slogpy"
 version = "0.1.0-dev"
 description = "Basic console and file logging"
-license = "Proprietary"
+license = "LICENSE"
 authors = ["Neel Malik <n33lm@outlook.com>"]
 readme = "README.md"
 repository = "https://github.com/slogpy/slogpy"

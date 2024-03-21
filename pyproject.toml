@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "slogpy"
-version = "0.1.0-dev"
+version = "0.1.0"
 description = "Basic console and file logging"
 license = "LICENSE"
 authors = ["Neel Malik <n33lm@outlook.com>"]

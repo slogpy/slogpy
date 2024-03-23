@@ -7,10 +7,10 @@ import logging
 import os
 from typing import List, Optional
 
-from rich.table import Table
 import rich.box
-from rich.console import Console
 import rich.console
+from rich.console import Console
+from rich.table import Table
 from rich.theme import Theme
 
 from slogpy.util import strip_style_markup
@@ -20,40 +20,42 @@ OptListStr = Optional[List[str]]
 
 SLOG_THEME_DATA = {
     # Log Levels
-    'debug': 'bright_black',
-    'info': 'white',
-    'warn': 'bright_yellow',
-    'error': 'bright_red',
-    'fatal': 'white on red',
-    'annoy': 'red on bright_yellow',
-    'fake': 'black on green',
-    'debug_label': 'magenta',
+    "debug": "bright_black",
+    "info": "white",
+    "warn": "bright_yellow",
+    "error": "bright_red",
+    "fatal": "white on red",
+    "annoy": "red on bright_yellow",
+    "fake": "black on green",
+    "debug_label": "magenta",
     # Section
-    'section_rule': 'bright_blue',
-    'section_start': 'yellow',
-    'section_end': 'cyan',
-    'section_timestamp': 'bright_black',
+    "section_rule": "bright_blue",
+    "section_start": "yellow",
+    "section_end": "cyan",
+    "section_timestamp": "bright_black",
     # Misc
-    'filepath': 'green',
+    "filepath": "green",
 }
 
 SLOG_THEME = Theme(SLOG_THEME_DATA)
-SLOG_NO_THEME = Theme({k: '' for k in SLOG_THEME_DATA})
+SLOG_NO_THEME = Theme({k: "" for k in SLOG_THEME_DATA})
 CONSOLE = Console(theme=SLOG_THEME)
+
+MIN_LONG_VARIABLE_NAME_LENGTH = 8
 
 
 def _get_depth_str(depth):
     """Create pad for insertion at beginning of a log output"""
     if depth == 0:
-        return ''
-    return '-' * (depth * 2) + ' '
+        return ""
+    return "-" * (depth * 2) + " "
 
 
 def _get_logging_root_path():
-    """What directory should we log into"""
-    root = os.getenv('SLOGPY_LOGPATH')
+    """Get the directory we should log into"""
+    root = os.getenv("SLOGPY_LOGPATH")
     if root and not os.path.isdir(root):
-        print(f'** WARNING ** SLOGPY_LOGPATH set to {root} but that is not a directory; using {os.getcwd()}')
+        print(f"** WARNING ** SLOGPY_LOGPATH set to {root} but that is not a directory; using {os.getcwd()}")
         root = None
     if not root:
         root = os.getcwd()
@@ -63,16 +65,16 @@ def _get_logging_root_path():
 def _get_logging_name(module, tag):
     """Get the datetime thingy"""
     now = datetime.datetime.now()
-    base_part = now.strftime('%Y%m%d_%H%M%S')
-    tag_part = f'.{tag}' if tag else ''
+    base_part = now.strftime("%Y%m%d_%H%M%S")
+    tag_part = f".{tag}" if tag else ""
     if module:
-        return f'{module}.{base_part}{tag_part}'
+        return f"{module}.{base_part}{tag_part}"
     return base_part
 
 
 class Slog:
     """Script Logger"""
-    # pylint: disable=too-many-public-methods
+
     MINIMAL = 0
     DEBUG = 1
     INFO = 5
@@ -104,15 +106,16 @@ class Slog:
     }
 
     @classmethod
-    def initialize(cls,
-                   path: str = None,
-                   module=None,
-                   tag=None,
-                   file_logging=True,
-                   console_logging=True,
-                   log_level=INFO):
+    def initialize(
+        cls,  # noqa: PLR0913
+        path: str = None,
+        module=None,
+        tag=None,
+        file_logging=True,
+        console_logging=True,
+        log_level=INFO,
+    ):
         """Initialize Slog - optional but recommended"""
-        # pylint: disable=too-many-arguments
         cls.set_log_level(log_level)
         cls.console_logging_enabled = console_logging
         if module:
@@ -132,7 +135,7 @@ class Slog:
     def _initialize_log_file(cls, module=None, tag=None):
         log_dir = _get_logging_root_path()
         log_name = _get_logging_name(module, tag)
-        cls._log_file = os.path.join(log_dir, f'{log_name}.log')
+        cls._log_file = os.path.join(log_dir, f"{log_name}.log")
 
     @classmethod
     def _initialize_logger(cls):
@@ -140,10 +143,10 @@ class Slog:
         cls._logger = False
         # actually initialize cls._logger
         try:
-            cls._logger = logging.getLogger('main')
+            cls._logger = logging.getLogger("main")
             cls._logger.setLevel(logging.NOTSET + 1)
 
-            file_log_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+            file_log_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 
             if not cls._log_file:
                 cls._initialize_log_file()
@@ -152,11 +155,11 @@ class Slog:
             file_handler.setFormatter(file_log_formatter)
 
             cls._logger.addHandler(file_handler)
-        except Exception as ex:  # pylint: disable=broad-except
+        except Exception as ex:
             if not cls._logger_threw_exception:
                 cls._logger_threw_exception = True
                 # using print here as we may not be printing to console
-                print(f'*** Exception creating file logger: {ex}')
+                print(f"*** Exception creating file logger: {ex}")
 
     @classmethod
     def set_all_fake(cls):
@@ -165,7 +168,7 @@ class Slog:
 
     @classmethod
     def clear_all_fake(cls):
-        """Clears the all fake flag"""
+        """Clear the all fake flag"""
         cls._it_is_all_fake = False
 
     @classmethod
@@ -183,10 +186,7 @@ class Slog:
         """Set the theme as defined by the user"""
         # The caller should not need to know all the keys that we have added, so we start with either the default
         # or the "no theme" dictionary and then apply the passed in dictionary to it.
-        if update:
-            base = SLOG_THEME_DATA.copy()
-        else:
-            base = {k: '' for k in SLOG_THEME_DATA}
+        base = SLOG_THEME_DATA.copy() if update else {k: "" for k in SLOG_THEME_DATA}
         base.update(user_theme)
         cls._rich_console = rich.console.Console(theme=Theme(base))
 
@@ -204,65 +204,62 @@ class Slog:
     # The logging worker functions
     # ============================================================
     @classmethod
-    def slog(cls, message, level=INFO, depth=0, op_start=False, always=False, fake=False):
+    def slog(cls, message, level=INFO, depth=0, op_start=False, always=False, fake=False):  # noqa: PLR0913
         """script log - write some stuff to the console and/or the file"""
-        # pylint: disable=too-many-arguments
         fake = fake or cls._it_is_all_fake
         depth_str = _get_depth_str(depth)
-        out_message = f'[fake] ══ FAKE ══ [/] {message}' if fake else message
+        out_message = f"[fake] ══ FAKE ══ [/] {message}" if fake else message
         cls._slog_to_file(out_message, level, depth_str, op_start)
         cls._slog_to_console(out_message, level, depth_str, op_start, always)
 
     @classmethod
-    def section(cls, name, time_part='', start=True, style='section_rule', max_width=118, level=INFO):
+    def section(cls, name, time_part="", start=True, style="section_rule", max_width=118, level=INFO):  # noqa: PLR0913
         """Section header/footer"""
-        # pylint: disable=too-many-arguments
-        name_style = '[section_start]' if start else '[section_end]'
-        file_tag = 'SECTION START: ' if start else 'SECTION END: '
-        styled_title = f'{name_style}{name}[/] [section_timestamp]{time_part}[/]'
+        name_style = "[section_start]" if start else "[section_end]"
+        file_tag = "SECTION START: " if start else "SECTION END: "
+        styled_title = f"{name_style}{name}[/] [section_timestamp]{time_part}[/]"
         # Need to do strip rather than just cat name and time_part as either may have embedded styles
         stripped_title = strip_style_markup(styled_title)
         # Not too wide and adjust smaller for small consoles
         max_width = min(cls._rich_console.width, max_width)
-        the_bar = '━' * max(10, (max_width - 1 - len(stripped_title)))
+        the_bar = "━" * max(10, (max_width - 1 - len(stripped_title)))
 
         # output to console
         if cls.console_logging_enabled and (level >= cls._console_log_level):
-            cls._rich_console.print(f'[{style}]{the_bar}[/] {styled_title}')
+            cls._rich_console.print(f"[{style}]{the_bar}[/] {styled_title}")
 
         # output to file
-        cls._slog_to_file('=' * 80, level, '', False)
-        cls._slog_to_file(file_tag + stripped_title, level, '', False)
-        cls._slog_to_file('=' * 80, level, '', False)
+        cls._slog_to_file("=" * 80, level, "", False)
+        cls._slog_to_file(file_tag + stripped_title, level, "", False)
+        cls._slog_to_file("=" * 80, level, "", False)
 
     @classmethod
-    def _slog_to_console(cls, message, level, depth_str, op_start, always):
+    def _slog_to_console(cls, message, level, depth_str, op_start, always):  # noqa: PLR0913
         """Actually log to the console"""
-        # pylint: disable=too-many-arguments
         if not cls.console_logging_enabled:
             return
 
         prepend_map = {
-            Slog.WARN: '[warn]WARNING[/]: ',
-            Slog.ERROR: '[error]ERROR[/]: ',
-            Slog.FATAL: '[fatal]FATAL[/]: ',
-            Slog.DEBUG: '[debug_label]DEBUG[/]: '
+            Slog.WARN: "[warn]WARNING[/]: ",
+            Slog.ERROR: "[error]ERROR[/]: ",
+            Slog.FATAL: "[fatal]FATAL[/]: ",
+            Slog.DEBUG: "[debug_label]DEBUG[/]: ",
         }
         # Guard clause - no logging to console needed
         if not always and level < cls._console_log_level:
             return
         # Set up for the colorized prepend for >= WARN
-        prepend = ''
+        prepend = ""
         if prepend_map.get(level):
             prepend = prepend_map[level]
         # Most message parts get info, but debug gets debug
-        message_theme = '[info]'
+        message_theme = "[info]"
         if level == Slog.DEBUG:
-            message_theme = '[debug]'
+            message_theme = "[debug]"
         # No newline if op_start
-        ending = '' if op_start else '\n'
+        ending = "" if op_start else "\n"
         # Send it
-        cls._rich_console.print(f'{depth_str}{prepend}{message_theme}{message}', end=ending, soft_wrap=True)
+        cls._rich_console.print(f"{depth_str}{prepend}{message_theme}{message}", end=ending, soft_wrap=True)
 
     @classmethod
     def _slog_to_file(cls, message, level, depth_str, op_start):
@@ -275,18 +272,18 @@ class Slog:
         # log the message
         try:
             # Log the message via python logging
-            out_message = strip_style_markup(f'{depth_str}{message}', console=cls._rich_console)
+            out_message = strip_style_markup(f"{depth_str}{message}", console=cls._rich_console)
             if op_start:
-                out_message += '[ --> ]'
+                out_message += "[ --> ]"
             logging_level = cls.SLOG_TO_LOGGING[level]
             cls._logger.log(level=logging_level, msg=out_message)
-        except Exception as ex:  # pylint: disable=broad-except
+        except Exception as ex:
             # if this is the first exception, then we send the exception to the console.
             if not cls._logger_threw_exception:
                 cls._logger_threw_exception = True
                 # send exception to console
                 # ...for now
-                print(f'** File logger exception **: {ex}')
+                print(f"** File logger exception **: {ex}")
 
     # ============================================================
     # Where's my logfile?
@@ -302,9 +299,9 @@ class Slog:
     def show_logging_path(cls):
         """Display the log file path to the console"""
         if cls._log_file is None:
-            cls._rich_console.print('[warn]NO LOG FILE[/warn]')
+            cls._rich_console.print("[warn]NO LOG FILE[/warn]")
         else:
-            cls._rich_console.print(f'Log written to: [filepath]{cls._log_file}[/]')
+            cls._rich_console.print(f"Log written to: [filepath]{cls._log_file}[/]")
 
     # ============================================================
     # Normal logging functions
@@ -314,12 +311,11 @@ class Slog:
         """Show an annoy message...only displayed first time unique message passed"""
         if message not in cls._annoyed:
             cls._annoyed[message] = True
-            cls.slog(f'[annoy]ANNOYING YOU: {message}[/annoy]', always=True)
+            cls.slog(f"[annoy]ANNOYING YOU: {message}[/annoy]", always=True)
 
     @classmethod
-    def always(cls, message, level=INFO, depth=0, op_start=False, fake=False):
+    def always(cls, message, level=INFO, depth=0, op_start=False, fake=False):  # noqa: PLR0913
         """We want this to go to the console...period."""
-        # pylint: disable=too-many-arguments
         cls.slog(message, level, depth, op_start, fake=fake)
 
     @classmethod
@@ -350,18 +346,17 @@ class Slog:
     @classmethod
     def fake(cls, message, log_level=INFO, depth=0, op_start=False):
         """specific log of a FAKE operation"""
-        cls.slog(message=f'[fake] ══ FAKE ══ [/] {message}', level=log_level, depth=depth, op_start=op_start)
+        cls.slog(message=f"[fake] ══ FAKE ══ [/] {message}", level=log_level, depth=depth, op_start=op_start)
 
     # ============================================================
     # Specialty logging
     # ============================================================
 
     @staticmethod
-    def _process_locals(caller_locals: dict,
-                        var_names: List[str],
-                        obfuscate: OptListStr = None,
-                        hide: OptListStr = None):
-        """Gets the locals ready for display"""
+    def _process_locals(
+        caller_locals: dict, var_names: List[str], obfuscate: OptListStr = None, hide: OptListStr = None
+    ):
+        """Get the locals ready for display"""
         work = copy.copy(var_names)
         if obfuscate:
             work.extend(obfuscate)
@@ -373,23 +368,24 @@ class Slog:
                 continue
             value = caller_locals[name]
             if obfuscate and name in obfuscate:
-                if isinstance(caller_locals[name], str) and len(caller_locals[name]) > 8:
-                    value = caller_locals[name][0:1] + '***' + caller_locals[name][-1:]
+                if isinstance(caller_locals[name], str) and len(caller_locals[name]) > MIN_LONG_VARIABLE_NAME_LENGTH:
+                    value = caller_locals[name][0:1] + "***" + caller_locals[name][-1:]
                 else:
-                    value = '*****'
+                    value = "*****"
             value = str(value)
             locals_dict[name] = value
         return locals_dict
 
     @classmethod
-    def show_locals(cls,
-                    var_names: OptListStr = None,
-                    obfuscate: OptListStr = None,
-                    hide: OptListStr = None,
-                    pretty=True,
-                    log_level=INFO):
+    def show_locals(
+        cls,  # noqa: PLR0913
+        var_names: OptListStr = None,
+        obfuscate: OptListStr = None,
+        hide: OptListStr = None,
+        pretty=True,
+        log_level=INFO,
+    ):
         """Display locals from the calling function"""
-        # pylint: disable=too-many-arguments
         frame = inspect.currentframe()
         caller_locals = frame.f_back.f_locals
         if var_names is None:
@@ -405,10 +401,10 @@ class Slog:
 
         # If we pretty printed, we only want the file
         if pretty:
-            slog_kwargs = {'depth_str': '', 'op_start': False, 'level': log_level}
-            _ = [cls._slog_to_file(f'{k}: {v}', **slog_kwargs) for k, v in locals_dict.items()]
+            slog_kwargs = {"depth_str": "", "op_start": False, "level": log_level}
+            _ = [cls._slog_to_file(f"{k}: {v}", **slog_kwargs) for k, v in locals_dict.items()]
         else:
-            _ = [cls.slog(f'{k}: {v}', level=log_level) for k, v in locals_dict.items()]
+            _ = [cls.slog(f"{k}: {v}", level=log_level) for k, v in locals_dict.items()]
 
     @classmethod
     def log_locals(cls, obfuscate: OptListStr = None, hide: OptListStr = None, log_level=DEBUG):
@@ -417,4 +413,4 @@ class Slog:
         caller_locals = frame.f_back.f_locals
         var_names = list(caller_locals.keys())
         locals_dict = cls._process_locals(caller_locals, var_names, obfuscate, hide)
-        cls.slog(f'Caller vars: {locals_dict}', level=log_level)
+        cls.slog(f"Caller vars: {locals_dict}", level=log_level)

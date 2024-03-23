@@ -17,6 +17,7 @@ rich = "^13.7.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.1.1"
+ruff = "^0.3.4"
 
 [tool.poetry-dynamic-versioning]
 enable = true
@@ -27,3 +28,48 @@ metadata = false
 [build-system]
 requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
 build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.ruff]
+line-length = 120 # unlike Black, since we have wider screens
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["ARG", "E", "F", "D", "ERA", "I", "INT", "N", "PL", "Q", "SIM", "TID", "W"]
+ignore = [
+    "D105",     # "Missing docstring in magic method"
+    "D203",     # "1 blank line required before class docstring"
+    "D211",     # "no-blank-line-before-class"
+    "D213",     # "multi-line-summary-second-line"
+    "D400",     # "First line should end with a period"
+    "D403",     # "First word of the first line should be capitalized"
+    "D415",     # "First line should end with a period, question mark, or exclamation point"
+    "EM101",    # "Exception must not use a string literal, assign to variable first"
+    "EM102",    # "Exception must not use an f-string literal, assign to variable first"
+    ]
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+#
+# This is currently disabled by default, but it is planned for this
+# to be opt-out in the future.
+docstring-code-format = false
+
+# Set the line length limit used when formatting code snippets in
+# docstrings.
+#
+# This only has an effect when the `docstring-code-format` setting is
+# enabled.
+docstring-code-line-length = "dynamic"

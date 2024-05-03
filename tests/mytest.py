@@ -45,9 +45,6 @@ def test_progress():
             time.sleep(0.0003)
 
 
-if __name__ == '__main__':
-    test_progress()
-
 def some_function(name, title, number=27):
     """Demonstrate show_locals and log_locals"""
     x = f'{name}, {title}'

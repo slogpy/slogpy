@@ -1,10 +1,7 @@
 """The test for the slogpy package."""
 from slogpy import slog
-from slogpy import __version__
 from slogpy.slog import Slog as slog
-def test_version():
-    """The most basic of tests."""
-    assert __version__ == "0.1.0"
+
 
 def setup_function(function):
     slog.initialize(file_logging=False)

@@ -106,8 +106,8 @@ class Slog:
     }
 
     @classmethod
-    def initialize(
-        cls,  # noqa: PLR0913
+    def initialize(  # noqa: PLR0913
+        cls,
         path: str = None,
         module=None,
         tag=None,
@@ -377,8 +377,8 @@ class Slog:
         return locals_dict
 
     @classmethod
-    def show_locals(
-        cls,  # noqa: PLR0913
+    def show_locals(  # noqa: PLR0913
+        cls,
         var_names: OptListStr = None,
         obfuscate: OptListStr = None,
         hide: OptListStr = None,

@@ -12,8 +12,8 @@ class SlogProgress(rich.progress.Progress):
     """A slog friendly progress"""
 
     # pylint: disable=useless-super-delegation
-    def __init__(
-        self,  # noqa: D107, PLR0913
+    def __init__(  # noqa: D107, PLR0913
+        self,
         *columns: Union[str, ProgressColumn],
         auto_refresh: bool = True,
         refresh_per_second: float = 10,

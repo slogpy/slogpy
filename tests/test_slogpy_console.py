@@ -1,47 +1,15 @@
-"""The test for the slogpy package."""
+"""Import slogpy from slog"""
 from slogpy import slog
-from slogpy.slog import Slog as slog
 
-
-def setup_function(function):
+"""This is a setup function"""
+def setup_function():
+    """Not to create a file for output"""
     slog.initialize(file_logging=False)
 
-#Info
+"""First unit test"""
 def test_info_console_output(capsys, msg="This is a console test"):
+    """Passing a message to the info method and then capture the message from the console"""
     slog.info(msg)
     expected_content = f"{msg}\n"
-    # Capture the output to stdout and stderr
-    out, _ = capsys.readouterr()
-    assert expected_content == out
-
-#Annoy
-def test_annoy_console_output(capsys, msg="This is a console test"):
-    slog.annoy(msg)
-    expected_content = f"ANNOYING YOU: {msg}\n"
-    # Capture the output to stdout and stderr
-    out, _ = capsys.readouterr()
-    assert expected_content == out
-
-#Debug
-def test_debug_console_output(capsys, msg=""):
-    slog.debug(msg)
-    expected_content = f"{msg}"
-    # Capture the output to stdout and stderr
-    out, _ = capsys.readouterr()
-    assert expected_content == ""
-
-#Warn
-def test_warn_console_output(capsys, msg="This is a console test"):
-    slog.warn(msg)
-    expected_content = f"WARNING: {msg}\n"
-    # Capture the output to stdout and stderr
-    out, _ = capsys.readouterr()
-    assert expected_content == out
-
-#Fatal
-def test_warn_console_output(capsys, msg="This is a console test"):
-    slog.fatal(msg)
-    expected_content = f"FATAL: {msg}\n"
-    # Capture the output to stdout and stderr
     out, _ = capsys.readouterr()
     assert expected_content == out

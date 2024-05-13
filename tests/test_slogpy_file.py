@@ -1,11 +1,7 @@
-"""Import slogpy from slog"""
-from slogpy.slog import Slog as slog # noqa: N813 I001
+"""Import tempfile"""
 import tempfile
 
-"""This is a setup function"""
-def setup_function():
-    """create a file for output"""
-    slog.initialize(file_logging=True)
+from slogpy.slog import Slog as slog  # noqa: N813
 
 """debug method unit test"""
 def test_debug_file(msg="This is a file test"):
@@ -17,5 +13,4 @@ def test_debug_file(msg="This is a file test"):
     expected_content = f"- DEBUG - {msg}\n"
     with open(temp.name, "r") as f:
         content = f.read()
-
     assert expected_content in content

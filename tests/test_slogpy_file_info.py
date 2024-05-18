@@ -12,6 +12,12 @@ def setupfunction():
     log_file = tempfile.mktemp(suffix=".log")
     slog.initialize(file_logging=True, log_file=log_file)
 
+def read_log_file():
+    """Read and return the content of the log file"""
+    log_file = slog.get_logging_path()
+    with open(log_file, "r") as file:
+        return file.read()
+
 # Unit test for logging
 @pytest.mark.parametrize("msg", [
     ("This is a test for the file "),
@@ -22,18 +28,15 @@ def setupfunction():
 def test_info_file_output(msg):
     """Passing a message to the info method and then read the message from the log file"""
     slog.info(msg)
-    log_file = slog.get_logging_path()
-    with open(log_file, "r") as file:
-        content = file.read()
+    content = read_log_file()
     expected_content = f"{msg}\n"
     assert expected_content in content
 
 def test_file_timestamp():
     """Test the timestamp format in the log file"""
     slog.info("testing")
-    log_file = slog.get_logging_path()
-    with open(log_file, "r") as file:
-        content = file.read()
+    content = read_log_file()
+    first_line = content.splitlines()[0]
     iso8601_format= r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}"
-    timestamp_match = re.search(iso8601_format, content)
-    assert timestamp_match is not None, f"Timestamp not found in {content}"
+    assert re.match(iso8601_format, first_line), f"First line does not start with a valid timestamp: {first_line}"
+

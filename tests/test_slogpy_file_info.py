@@ -39,4 +39,3 @@ def test_file_timestamp():
     first_line = content.splitlines()[0]
     iso8601_format= r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}"
     assert re.match(iso8601_format, first_line), f"First line does not start with a valid timestamp: {first_line}"
-

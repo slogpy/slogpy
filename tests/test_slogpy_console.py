@@ -1,4 +1,4 @@
-"""The purpose of the code is to give two methods a unit test to make sure that they are working properly"""
+"""The purpose of the code is to give all methods a unit test to make sure that they are working properly"""
 from slogpy.slog import Slog as slog  # noqa: N813
 
 
@@ -23,11 +23,58 @@ def test_debug_console_output(capsys, msg=""):
 
     When: Using debug() with a String
 
-    Then: Contents of String shows up in stdout AND nothing in stderr
+    Then: Contents of String shows up in a file AND nothing in stdout and stderr
 
     """
     slog.debug(msg)
     expected_content = ""
-    # not sure this line of code is necessary or not. since this won't be any content in the console.
     out, _ = capsys.readouterr()
-    assert expected_content == ""
+    assert expected_content == out
+
+def test_annoy_console_output(capsys, msg="This is a console test"):
+    """Simple test for console output
+
+    Given:Using slogpy
+    When: Using annoy() with a String
+    Then: Contents of String shows up in stdout AND nothing in stderr
+    """
+    slog.annoy(msg)
+    expected_content = f"ANNOYING YOU: {msg}\n"
+    out, _ = capsys.readouterr()
+    assert expected_content == out
+
+def test_warn_console_output(capsys, msg="This is a console test"):
+    """Simple test for console output
+
+    Given:Using slogpy
+    When: Using warn() with a String
+    Then: Contents of String shows up in stdout AND nothing in stderr
+    """
+    slog.warn(msg)
+    expected_content = f"WARNING: {msg}\n"
+    out, _ = capsys.readouterr()
+    assert expected_content == out
+
+def test_error_console_output(capsys, msg="This is a console test"):
+    """Simple test for console output
+
+    Given:Using slogpy
+    When: Using error() with a String
+    Then: Contents of String shows up in stdout AND nothing in stderr
+    """
+    slog.error(msg)
+    expected_content = f"ERROR: {msg}\n"
+    out, _ = capsys.readouterr()
+    assert expected_content == out
+
+def test_fatal_console_output(capsys, msg="This is a console test"):
+    """Simple test for console output
+
+    Given:Using slogpy
+    When: Using info() with a String
+    Then: Contents of String shows up in stdout AND nothing in stderr
+    """
+    slog.fatal(msg)
+    expected_content = f"FATAL: {msg}\n"
+    out, _ = capsys.readouterr()
+    assert expected_content == out

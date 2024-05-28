@@ -7,9 +7,9 @@ def setup_function():
     slog.initialize(file_logging=False)
 
 def test_info_console_output(capsys, msg="This is a console test"):
-    """Given: I am using the slogpy library
+    """Given: Using the slogpy library
 
-    When: I log an information message
+    When: log an information message
 
     Then: the message shows in the stdout stream
     And the message does not show in the stderr stream
@@ -17,19 +17,24 @@ def test_info_console_output(capsys, msg="This is a console test"):
     """
     slog.info(msg)
     expected_content = f"{msg}\n"
-    out, _ = capsys.readouterr()
+    expected_error_content = ""
+    out, error = capsys.readouterr()
+
     assert expected_content == out
+    assert expected_error_content == error
 
 def test_debug_console_output(capsys, msg=""):
     """Given:I am using the slogpy library
 
-    When: I Using debug() with a String
+    When: log an information message
 
-    Then: Contents of String shows up in a file AND nothing in stdout and stderr
-
+    Then: the message shows in the stdout stream
+    And the message does not show in the stderr stream
     """
     slog.debug(msg)
     expected_content = ""
-    out, _ = capsys.readouterr()
+    expected_error_content = ""
+    out, error = capsys.readouterr()
+    assert expected_error_content == error
     assert expected_content == out
 

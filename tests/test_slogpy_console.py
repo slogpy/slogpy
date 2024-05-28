@@ -1,4 +1,4 @@
-"""The purpose of the code is to give all methods a unit test to make sure that they are working properly"""
+"""The purpose of the code is to give debug method a unit test to make sure that they are working properly"""
 from slogpy.slog import Slog as slog  # noqa: N813
 
 
@@ -23,10 +23,10 @@ def test_info_console_output(capsys, msg="This is a console test"):
     assert expected_content == out
     assert expected_error_content == error
 
-def test_debug_console_output(capsys, msg=""):
+def test_debug_console_output(capsys, msg="This is a test message"):
     """Given:I am using the slogpy library
 
-    When: Passing an information message
+    When: Passing an message to debug()
 
     Then: the message shows in the file
     And the message does not show in the stderr and stdout stream

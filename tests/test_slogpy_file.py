@@ -1,4 +1,4 @@
-"""The purpose of the code is to give all methods a unit test to make sure that they are working properly"""
+"""The purpose of the code is to give debug method a unit test to make sure that they are working properly"""
 import tempfile
 
 from slogpy.slog import Slog as slog  # noqa: N813
@@ -21,7 +21,7 @@ def test_info_file(msg="This is a file test"):
 
     assert expected_content in content
 
-def test_debug_file(capsys, msg="This is a file test"):
+def test_debug_file(msg="This is a file test"):
     """Given:Using slogpy
 
     When: Using debug() with a String
@@ -33,9 +33,6 @@ def test_debug_file(capsys, msg="This is a file test"):
     slog.initialize(path=temp.name,file_logging=True)
     slog.debug(msg)
     expected_content = f"- DEBUG - {msg}\n"
-    out, error = capsys.readouterr()
-    assert error == ""
-    assert out == ""
     with open(temp.name, "r") as f:
         content = f.read()
     assert expected_content in content

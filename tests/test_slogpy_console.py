@@ -26,10 +26,10 @@ def test_info_console_output(capsys, msg="This is a console test"):
 def test_debug_console_output(capsys, msg=""):
     """Given:I am using the slogpy library
 
-    When: log an information message
+    When: Passing an information message
 
-    Then: the message shows in the stdout stream
-    And the message does not show in the stderr stream
+    Then: the message shows in the file
+    And the message does not show in the stderr and stdout stream
     """
     slog.debug(msg)
     expected_content = ""

@@ -1,9 +1,9 @@
-"""The purpose of the code is to give debug method a unit test to make sure that they are working properly"""
+"""The purpose of the code is to give debug and info methods a unit test to make sure that they are working properly"""
 from slogpy.slog import Slog as slog  # noqa: N813
 
 
 def setup_function():
-    """set the Default to no log file, since only interested in console output"""
+    """Set the Default to no log file, since only interested in console output"""
     slog.initialize(file_logging=False)
 
 def test_info_console_output(capsys, msg="This is a console test"):

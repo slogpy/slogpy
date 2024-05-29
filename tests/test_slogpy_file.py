@@ -1,4 +1,4 @@
-"""The purpose of the code is to give debug method a unit test to make sure that they are working properly"""
+"""The purpose of the code is to give debug and info methods a unit test to make sure that they are working properly"""
 import tempfile
 
 from slogpy.slog import Slog as slog  # noqa: N813

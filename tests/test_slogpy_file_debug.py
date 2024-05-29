@@ -58,7 +58,7 @@ def test_debug_file(temp_log_file,msg):
 
     When: Using debug() with a String
 
-    Then: Contents of String shows up in a temp file AND nothing in stdout and stderr
+    Then: Contents of String shows up in a temp file
 
     """
     slog.info(msg)

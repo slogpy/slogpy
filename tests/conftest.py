@@ -1,4 +1,4 @@
-"""UnitTesting for slog.info to file"""
+"""Conftest File is for all the unit test files that test file logging."""
 import os
 import tempfile
 

@@ -4,13 +4,14 @@ from slogpy.slog import Slog as slog  # noqa: N813
 
 
 def test_annoy_unique_message(capsys, msg="This is a annoy test"):  # noqa: D103
-    """Given: a single line annoy message
+    """Given: the same message
 
-    When: passed into slog.annoy
+    When: passed into slog.annoy() multiple times.
 
-    Then: check for annoy message only once and display it.
+    Then: message is displayed only once in the console.
     """
-    # Act
+    slog.initialize(file_logging=False)
+    slog.annoy(msg)
     slog.annoy(msg)
 
     expected_content = f"ANNOYING YOU: {msg}\n"

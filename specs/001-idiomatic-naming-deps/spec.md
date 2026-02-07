@@ -73,7 +73,7 @@ A developer or contributor reads the README, copilot-instructions, or constituti
 - **FR-006**: The `pyproject.toml` Rich version constraint MUST be changed from `^13.7.0` to `>=12,<15`.
 - **FR-007**: The `pyproject.toml` pytest version constraint MUST be changed from `^8.1.1` to `>=8,<10`.
 - **FR-008**: All code examples in README.md MUST use the `Slog` (Pascal case) calling convention.
-- **FR-009**: The `.github/copilot-instructions.md` MUST be updated to reflect the new import style and dependency ranges.
+- **FR-009**: The `.github/copilot-instructions.md` and `.specify/memory/constitution.md` MUST be updated to reflect the new import style and dependency ranges.
 - **FR-010**: All existing tests MUST continue to pass after the naming and dependency changes.
 
 ## Success Criteria *(mandatory)*
@@ -85,6 +85,12 @@ A developer or contributor reads the README, copilot-instructions, or constituti
 5. Library installs and tests pass on Python 3.10 with Rich 12.x.
 6. Library installs and tests pass on Python 3.13 with Rich 14.x.
 7. No downstream breaking change — consumers who alias `Slog as slog` in their own code are unaffected.
+
+## Clarifications
+
+### Session 2026-02-06
+
+- Q: Should the constitution (`.specify/memory/constitution.md`) be added to FR-009 scope for consistency validation? → A: Yes — the constitution was created on this feature branch and is in scope.
 
 ## Assumptions
 

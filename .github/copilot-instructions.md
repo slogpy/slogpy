@@ -28,7 +28,7 @@ poetry run ruff format .
 
 slogpy is a logging library built on top of Python's `logging` module and [Rich](https://github.com/Textualize/rich) for console output. The core design:
 
-- **`Slog` class** (`slogpy/slog.py`) — The entire public API is `@classmethod` methods on a single class. There are no instances; consumers import and use it as a static singleton: `from slogpy.slog import Slog as slog`.
+- **`Slog` class** (`slogpy/slog.py`) — The entire public API is `@classmethod` methods on a single class. There are no instances; consumers import and use it as a static singleton: `from slogpy.slog import Slog`.
 - **Dual output** — Every log call writes to both console (via Rich) and file (via Python `logging.FileHandler`). Console output respects a log level threshold; file output captures everything.
 - **Custom log levels** — `MINIMAL=0, DEBUG=1, INFO=5, WARN=9, ERROR=10, FATAL=99`. These are mapped to Python `logging` levels for file output.
 - **`Section`** (`slogpy/section.py`) — Context manager that emits styled section start/end markers with elapsed time tracking.

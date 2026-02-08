@@ -153,7 +153,7 @@ class Slog:
             file_handler = logging.FileHandler(cls._log_file)
             file_handler.setLevel(logging.NOTSET + 1)
             file_handler.setFormatter(file_log_formatter)
-            if len (cls._logger.handlers) > 0:
+            if len(cls._logger.handlers) > 0:
                 if cls._logger.handlers[0].baseFilename == cls._log_file:
                     return
                 cls._logger.handlers.clear()

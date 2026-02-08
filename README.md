@@ -14,20 +14,19 @@ pip3 install --user --upgrade slogpy
 ```
 ### In your code
 ```python
-# maybe a bit weird looking, but it gets us the usage style we want
-from slogpy.slog import Slog as slog
+from slogpy.slog import Slog
 
-slog.initialize(module='widget') # optional, but highly recommended
+Slog.initialize(module='widget') # optional, but highly recommended
 
-slog.info('Log something at the info level')
-slog.debug('log some debugging...this will only go to file unless you set the logging level')
-slog.annoy('You need to add handling for this!')
-slog.warn('hey, this is a warning')
-slog.error('Something bad happened')
-slog.fatal('Oh no, Mr. Bill! Something REALLY bad happened')
+Slog.info('Log something at the info level')
+Slog.debug('log some debugging...this will only go to file unless you set the logging level')
+Slog.annoy('You need to add handling for this!')
+Slog.warn('hey, this is a warning')
+Slog.error('Something bad happened')
+Slog.fatal('Oh no, Mr. Bill! Something REALLY bad happened')
 
 # if you want to tell the user where the log is (after any logging!)
-print(f'Log written to: {slog.get_logging_path()}')
+print(f'Log written to: {Slog.get_logging_path()}')
 ```
 
 ## Using a progress bar with slog
@@ -40,7 +39,7 @@ Here's how to use them:
 ```python
 import time
 
-from slogpy.slog import Slog as slog
+from slogpy.slog import Slog
 from slogpy.progress import (SlogProgress, get_progress,
     get_progress_counting, get_progress_counting_with_time)
 
@@ -55,20 +54,20 @@ def test_progress():
     progress = SlogProgress()
     with progress:
         for fruit in progress.track(my_iterable, description='pick fruit'):
-            slog.info(f'working on {fruit}')
+            Slog.info(f'working on {fruit}')
             time.sleep(0.5)
 
     progress = get_progress_counting()
     with progress:
         for fruit in progress.track(my_iterable, description='pick fruit'):
-            slog.info(f'working on {fruit}')
+            Slog.info(f'working on {fruit}')
             time.sleep(0.5)
 
     progress = get_progress_counting_with_time()
     with progress:
         for tick in progress.track(range(0,10093), description='pick fruit'):
             if tick % 427 == 0:
-                slog.info(f'{tick} mod 7 is 0')
+                Slog.info(f'{tick} mod 7 is 0')
             time.sleep(0.0003)
 
 
@@ -79,17 +78,17 @@ if __name__ == '__main__':
 ## Dumping local vars
 There are two slog functions to help you emit your local variables:
 
-### `slog.show_locals()`
+### `Slog.show_locals()`
 This is primarily meant for when you want to show some/all of your locals on
 the console (they will also be logged).
-### `slog.log_locals()`
+### `Slog.log_locals()`
 This is primarily meant for when you want to log some/all of your locals, you
 can pass a value to `level` if you also want on the console (for instance, 
 during development).
 
 ### Example of both
 ```python
-from slogpy.slog import Slog as slog
+from slogpy.slog import Slog
 
 
 def some_function(name, title, number=27):
@@ -103,8 +102,8 @@ def some_function(name, title, number=27):
 
     # demonstrate with pretty set and unset
     for pretty in [True, False]:
-        slog.info(f'calling slog.show_locals() with {pretty=}')
-        slog.show_locals([
+        Slog.info(f'calling Slog.show_locals() with {pretty=}')
+        Slog.show_locals([
             'name',
             'title',
             'title',
@@ -115,17 +114,17 @@ def some_function(name, title, number=27):
 
     # If you want all the locals, just don't include the list of names
     # ...you may still want to hide/obfuscate
-    slog.info('calling slog.show_locals w/o specifying the names')
-    slog.show_locals(obfuscate=['password', 'other_pass'], hide=['super_secret'])
+    Slog.info('calling Slog.show_locals w/o specifying the names')
+    Slog.show_locals(obfuscate=['password', 'other_pass'], hide=['super_secret'])
 
-    # Logging (usually won't go to screen as it defaults to log_level=slog.DEBUG)
-    slog.info('calling slog.log_locals()')
-    slog.log_locals(obfuscate=['password', 'other_pass'], hide=['super_secret'])
+    # Logging (usually won't go to screen as it defaults to log_level=Slog.DEBUG)
+    Slog.info('calling Slog.log_locals()')
+    Slog.log_locals(obfuscate=['password', 'other_pass'], hide=['super_secret'])
 
     # But sometimes we are developing and want to see w/o having to go to the log
-    slog.info('calling slog.log_locals() and log_level=slog.INFO')
-    slog.log_locals(obfuscate=['password', 'other_pass'], hide=['super_secret'], log_level=slog.INFO)
-    slog.show_logging_path()
+    Slog.info('calling Slog.log_locals() and log_level=Slog.INFO')
+    Slog.log_locals(obfuscate=['password', 'other_pass'], hide=['super_secret'], log_level=Slog.INFO)
+    Slog.show_logging_path()
 
 
 if __name__ == '__main__':
@@ -135,23 +134,23 @@ if __name__ == '__main__':
 ## Where the heck are my logs?
 Generally, they will be in the same directory from which you ran the python script (CWD). The log file will be named using `YYYYmmDD_HHMMSS.log`
 
-If you called `slog.initialize()` with a module name (recommended), the filename will be `<module>.YYYYmmDD_HHMMSS.log`.
-You can also call `slog.initialize(path=my_path)` in which case `my_path` is used as the filename to log to. There are cases where this is better,
+If you called `Slog.initialize()` with a module name (recommended), the filename will be `<module>.YYYYmmDD_HHMMSS.log`.
+You can also call `Slog.initialize(path=my_path)` in which case `my_path` is used as the filename to log to. There are cases where this is better,
 but it should not be the norm.
 
-If the log file already exists, `slog` will append to that file.
+If the log file already exists, `Slog` will append to that file.
 
 You can also set a root directory to log to with the environment variable `SLOGPY_LOGPATH` in which case the logs will go to
 `<SLOGPY_LOGPATH>/<module>.YYYYmmDD_HHMMSS.log` or `<SLOGPY_LOGPATH>/YYYYmmDD_HHMMSS.log`
 
-Passing a `tag` to `slog.initialize()` will also affect the name of the generated log file. Passing a tag is handy when you have a tool that implements sub-commands and the like.
+Passing a `tag` to `Slog.initialize()` will also affect the name of the generated log file. Passing a tag is handy when you have a tool that implements sub-commands and the like.
 
-* `slog.initialize()` -> 20240320_072842.log
-* `slog.initialize(module='widget')` -> widget.20240320_072842.log
-* `slog.initialize(module='widget', tag='init')` -> widget.20240320_072842.init.log
-* `slog.initialize(tag='init')` -> 20240320_072842.init.log
+* `Slog.initialize()` -> 20240320_072842.log
+* `Slog.initialize(module='widget')` -> widget.20240320_072842.log
+* `Slog.initialize(module='widget', tag='init')` -> widget.20240320_072842.init.log
+* `Slog.initialize(tag='init')` -> 20240320_072842.init.log
 
-## Using tags with slog and click
+## Using tags with Slog and click
 
 ```python
 @click.group()
@@ -161,7 +160,7 @@ Passing a `tag` to `slog.initialize()` will also affect the name of the generate
 def widget_cmd_group(ctx, verbose):
     """does stuff"""
     ctx.ensure_object(dict)
-    ctx.obj['log_level'] = slog.DEBUG if verbose else slog.INFO
+    ctx.obj['log_level'] = Slog.DEBUG if verbose else Slog.INFO
     # other code goes here
 
 
@@ -169,6 +168,6 @@ def widget_cmd_group(ctx, verbose):
 @click.pass_context
 def widget_<command>(ctx):
     """widget <command>"""
-    slog.initialize(module='widget', tag='<command>', log_level=ctx.obj['log_level'])
+    Slog.initialize(module='widget', tag='<command>', log_level=ctx.obj['log_level'])
     # other code goes here
 ```

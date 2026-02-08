@@ -18,10 +18,10 @@
     - .specify/templates/checklist-template.md     ✅ compatible
     - .specify/templates/agent-file-template.md    ✅ compatible
   Follow-up TODOs:
-    - Update pyproject.toml python & rich constraints
-    - Update source, tests, README, copilot-instructions.md
+    - ✅ Update pyproject.toml python & rich constraints
+    - ✅ Update source, tests, README, copilot-instructions.md
       to use Pascal case Slog (remove `as slog` alias)
-    - Remove noqa: N813 comments that suppressed the alias warning
+    - ✅ Remove noqa: N813 comments that suppressed the alias warning
   ===================================================================
 -->
 

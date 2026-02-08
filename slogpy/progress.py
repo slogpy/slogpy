@@ -5,7 +5,7 @@ from typing import Optional, Union
 import rich.progress
 from rich.progress import GetTimeCallable, ProgressColumn
 
-from slogpy.slog import Slog as slog  # noqa: N813
+from slogpy.slog import Slog
 
 
 class SlogProgress(rich.progress.Progress):
@@ -27,7 +27,7 @@ class SlogProgress(rich.progress.Progress):
     ) -> None:
         super().__init__(
             *columns,
-            console=slog._rich_console,
+            console=Slog._rich_console,
             auto_refresh=auto_refresh,
             refresh_per_second=refresh_per_second,
             speed_estimate_period=speed_estimate_period,

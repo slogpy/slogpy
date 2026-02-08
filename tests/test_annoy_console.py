@@ -1,6 +1,6 @@
 """module contains tests for the Slog class, specifically the annoying method, which is responsible for slog annoying"""
 
-from slogpy.slog import Slog as slog  # noqa: N813
+from slogpy.slog import Slog
 
 
 def test_annoy_unique_message(capsys, msg="This is a annoy test"):  # noqa: D103
@@ -10,9 +10,9 @@ def test_annoy_unique_message(capsys, msg="This is a annoy test"):  # noqa: D103
 
     Then: message is displayed only once in the console.
     """
-    slog.initialize(file_logging=False)
-    slog.annoy(msg)
-    slog.annoy(msg)
+    Slog.initialize(file_logging=False)
+    Slog.annoy(msg)
+    Slog.annoy(msg)
 
     expected_content = f"ANNOYING YOU: {msg}\n"
     expected_error_content = ""

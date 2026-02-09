@@ -22,7 +22,7 @@ jobs:
         python-version: "3.x"
     - name: Install Poetry and dynamic versioning plugin
       run: |
-        python3 -m pip install --user poetry poetry-dynamic-versioning[plugin]
+        python3 -m pip install poetry poetry-dynamic-versioning[plugin]
     - name: Build a binary wheel and a source tarball
       run: poetry build
     - name: Store the distribution packages
@@ -48,8 +48,9 @@ jobs:
     - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
       with:
         fetch-depth: 0
-        persist-credentials: false
     - name: Verify tag is on main branch
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git fetch origin main
         if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then

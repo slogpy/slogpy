@@ -9,13 +9,22 @@ Auto-generated from all feature plans. Last updated: 2026-02-06
 ## Project Structure
 
 ```text
-src/
+slogpy/
 tests/
 ```
 
 ## Commands
 
-cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLOGIES] pytest [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLOGIES] ruff check .
+```bash
+# Install dependencies
+poetry install
+
+# Run tests
+poetry run pytest
+
+# Lint
+poetry run ruff check .
+```
 
 ## Code Style
 

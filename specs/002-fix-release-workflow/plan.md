@@ -12,9 +12,9 @@ The release workflow has 9 issues across security, correctness, and maintenance 
 
 1. **Replace `on: push` with scoped triggers:**
    - `on: push: tags: ['v*']` for PyPI + GitHub Release + Sigstore jobs
-   - `on: workflow_dispatch` for manual TestPyPI publishes (or gate TestPyPI to a specific branch like `main`)
+   - `on: workflow_dispatch` for manual trigger (build job only)
 2. **Fix the PyPI tag filter:** Change `startsWith(github.ref, 'refs/tags/x')` → `startsWith(github.ref, 'refs/tags/v')` to match semver tags like `v1.0.0`
-3. **Add a guard to TestPyPI:** Either gate it to tag pushes too, or to `push: branches: [main]` if you want pre-release testing on merge
+3. **Add a guard to TestPyPI:** Gate it to tag pushes with `if: startsWith(github.ref, 'refs/tags/v')` so it only publishes when tags are pushed, not on manual workflow_dispatch
 
 ## Phase 2 — Build correctness (issue #6)
 

@@ -38,7 +38,7 @@ slogpy is a logging library built on top of Python's `logging` module and [Rich]
 ## Conventions
 
 - **Slog is never instantiated** — all methods are `@classmethod`. Use the class directly: `from slogpy.slog import Slog`, then call `Slog.info(...)`, `Slog.warn(...)`, etc.
-- **Ruff**: All ruff rules in `pyproject.toml` are non-negotiable — always follow them. If a rule is exceptionally painful in a specific case, ask before adding a `noqa` exception.
+- **Ruff**: All Ruff rules in `ruff.toml` are non-negotiable — always follow them. If a rule is exceptionally painful in a specific case, ask before adding a `noqa` exception.
 - **Rich markup in messages**: Log messages can contain Rich style markup (e.g., `[yellow]text[/]`). The `strip_style_markup` utility in `util.py` removes markup before writing to file.
 - **Test structure**: Tests use `pytest`. Console-output tests use `capsys`; file-output tests use a `temp_log_file` fixture (from `conftest.py`) that creates a temp directory and initializes slog with a temp file path. Tests follow a Given/When/Then docstring pattern.
 - **Versioning**: The published version comes from git tags via `poetry-dynamic-versioning`; `__version__` in `__init__.py` is a placeholder.

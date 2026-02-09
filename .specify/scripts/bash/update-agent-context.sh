@@ -300,6 +300,11 @@ create_new_agent_file() {
     local language_conventions
     language_conventions=$(get_language_conventions "$NEW_LANG")
     
+    # Escape special sed characters (especially & which represents the matched text in sed)
+    escape_for_sed() {
+        printf '%s\n' "$1" | sed 's/[&/\]/\\&/g'
+    }
+    
     # Perform substitutions with error checking using safer approach
     # Escape special characters for sed by using a different delimiter or escaping
     local escaped_lang=$(printf '%s\n' "$NEW_LANG" | sed 's/[\[\.*^$()+{}|]/\\&/g')
@@ -329,14 +334,21 @@ create_new_agent_file() {
         recent_change="- $escaped_branch: Added"
     fi
 
+    # Escape all replacement values for sed
+    local escaped_project_structure=$(escape_for_sed "$project_structure")
+    local escaped_commands=$(escape_for_sed "$commands")
+    local escaped_language_conventions=$(escape_for_sed "$language_conventions")
+    local escaped_tech_stack=$(escape_for_sed "$tech_stack")
+    local escaped_recent_change=$(escape_for_sed "$recent_change")
+
     local substitutions=(
         "s|\[PROJECT NAME\]|$project_name|"
         "s|\[DATE\]|$current_date|"
-        "s|\[EXTRACTED FROM ALL PLAN.MD FILES\]|$tech_stack|"
-        "s|\[ACTUAL STRUCTURE FROM PLANS\]|$project_structure|g"
-        "s|\[ONLY COMMANDS FOR ACTIVE TECHNOLOGIES\]|$commands|"
-        "s|\[LANGUAGE-SPECIFIC, ONLY FOR LANGUAGES IN USE\]|$language_conventions|"
-        "s|\[LAST 3 FEATURES AND WHAT THEY ADDED\]|$recent_change|"
+        "s|\[EXTRACTED FROM ALL PLAN.MD FILES\]|$escaped_tech_stack|"
+        "s|\[ACTUAL STRUCTURE FROM PLANS\]|$escaped_project_structure|g"
+        "s|\[ONLY COMMANDS FOR ACTIVE TECHNOLOGIES\]|$escaped_commands|"
+        "s|\[LANGUAGE-SPECIFIC, ONLY FOR LANGUAGES IN USE\]|$escaped_language_conventions|"
+        "s|\[LAST 3 FEATURES AND WHAT THEY ADDED\]|$escaped_recent_change|"
     )
     
     for substitution in "${substitutions[@]}"; do
